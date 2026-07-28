@@ -90,6 +90,6 @@ function clickFollow(){
 }
 
 
-setInterval(showSocial, 5000);
+setInterval(showSocial, 10000);
 
 showSocial();
