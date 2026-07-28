@@ -1,100 +1,95 @@
-// Version demo + pronta API:
+const socials = [
 
-let values = {
+{
+  name: "J0X TV",
+  count: 26200,
+  pfp: "assets/youtube.svg"
+},
 
-youtube: 26200,
-twitch: 350,
-tiktok: 1200
+{
+  name: "j0x_tv",
+  count: 1200,
+  pfp: "assets/tiktok.svg"
+},
 
-};
+{
+  name: "il_j0x",
+  count: 350,
+  pfp: "assets/twitch.svg"
+}
 
-
-
-function animate(id,start,end){
-
-let current=start;
-
-let duration=800;
-
-let step=(end-start)/(duration/20);
-
-
-let timer=setInterval(()=>{
-
-current+=step;
+];
 
 
-if(
-(step>0 && current>=end) ||
-(step<0 && current<=end)
-){
+let index = 0;
 
-current=end;
-clearInterval(timer);
+function showSocial() {
+
+  const card = document.getElementById("card");
+
+  card.classList.remove("show");
+
+  setTimeout(()=>{
+
+    let s = socials[index];
+
+    document.getElementById("pfp").src = s.pfp;
+    document.getElementById("name").innerText = s.name;
+
+    animateNumber(s.count);
+
+    card.classList.add("show");
+
+    clickFollow();
+
+    index = (index + 1) % socials.length;
+
+  },800);
 
 }
 
 
-document.getElementById(id)
-.innerHTML=Math.floor(current)
-.toLocaleString();
+function animateNumber(end){
 
+  let current = 0;
 
-},20);
+  let step = end / 30;
 
+  let timer = setInterval(()=>{
 
-}
+    current += step;
 
+    if(current >= end){
+      current = end;
+      clearInterval(timer);
+    }
 
+    document.getElementById("count").innerText =
+      Math.floor(current).toLocaleString();
 
-
-function updateSocial(){
-
-
-animate(
-"youtubeCount",
-0,
-values.youtube
-);
-
-
-animate(
-"twitchCount",
-0,
-values.twitch
-);
-
-
-animate(
-"tiktokCount",
-0,
-values.tiktok
-);
-
+  },30);
 
 }
 
 
-updateSocial();
+function clickFollow(){
+
+  let btn = document.getElementById("followBtn");
+
+  btn.classList.remove("clicked");
+
+  setTimeout(()=>{
+    btn.classList.add("clicked");
+    btn.innerText = "Seguito";
+  },1500);
+
+  setTimeout(()=>{
+    btn.innerText = "Segui";
+  },3000);
+
+}
 
 
+setInterval(showSocial, 5000);
 
-
-
-// QUI POI INSERIAMO API REALI
-
-setInterval(()=>{
-
-
-console.log(
-"aggiornamento social..."
-);
-
-
-// esempio:
-// fetch youtube
-// fetch twitch
-// fetch tiktok
-
-
-},30000);
+showSocial();
