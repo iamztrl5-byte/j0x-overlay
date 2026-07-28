@@ -7,8 +7,8 @@ const app = express();
 app.use(cors());
 
 
-const CLIENT_ID = "g4l0jxd9jnx3f9us44lcs5vonw38ve";
-const CLIENT_SECRET = "o5m5tgpxqaunr1hd9en0390gub9jom";
+const CLIENT_ID = process.env.TWITCH_CLIENT_ID;
+const CLIENT_SECRET = process.env.TWITCH_CLIENT_SECRET;
 
 
 let twitchToken = "";
