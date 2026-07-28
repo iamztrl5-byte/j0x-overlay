@@ -28,7 +28,7 @@ body {
   opacity:0;
   transform:translateY(30px);
 
-  transition:all .8s ease;
+  transition:all .10s ease;
 
 }
 
