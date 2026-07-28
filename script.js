@@ -1,3 +1,9 @@
+// 🔑 CONFIG (METTI QUI LA TUA CHIAVE E POI TI DO IO IL CHANNEL ID)
+const API_KEY = "INCOLLA_LA_TUA_CHIAVE";
+const CHANNEL_ID = "UC0DGVBMy27moUROQ8gWoKMg";
+
+
+// 📊 SOCIALS (NON TOCCATO)
 const socials = [
 
     {
@@ -31,6 +37,39 @@ const socials = [
 ];
 
 
+// 🔴 NUOVA FUNZIONE YOUTUBE (AGGIUNTA)
+async function updateYouTubeData() {
+
+    try {
+
+        const url = `https://www.googleapis.com/youtube/v3/channels?part=statistics,snippet&id=${CHANNEL_ID}&key=${API_KEY}`;
+
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if (!data.items || data.items.length === 0) return;
+
+        const channel = data.items[0];
+
+        const subs = parseInt(channel.statistics.subscriberCount);
+        const name = channel.snippet.title;
+        const pfp = channel.snippet.thumbnails.default.url;
+
+        // aggiorna SOLO YouTube
+        socials[0].count = subs;
+        socials[0].username = name;
+        socials[0].icon = pfp;
+
+    } catch (e) {
+
+        console.log("Errore YouTube:", e);
+
+    }
+
+}
+
+
+// 🔁 CODICE TUO (NON TOCCATO)
 let index = 0;
 let animation;
 
@@ -41,8 +80,6 @@ function showSocial(){
 
     if(!card) return;
 
-
-    // uscita animazione
 
     card.style.opacity = "0";
     card.style.transform = "translateY(20px)";
@@ -71,16 +108,11 @@ function showSocial(){
             username.innerText = social.username;
 
 
-
         animateNumber(social.count);
 
 
-
-        // entrata animazione
-
         card.style.opacity = "1";
         card.style.transform = "translateY(0)";
-
 
 
         index++;
@@ -89,87 +121,63 @@ function showSocial(){
             index = 0;
         }
 
-
     },1200);
-
 
 }
 
 
-
 function animateNumber(target){
 
-
     const count = document.getElementById("count");
-
 
     if(!count)
         return;
 
-
-
     if(animation)
         clearInterval(animation);
-
-
 
     let current = 0;
 
     const speed = target / 50;
 
-
-
     animation = setInterval(()=>{
 
-
         current += speed;
-
 
         if(current >= target){
 
             current = target;
-
             clearInterval(animation);
 
         }
 
-
-
         count.innerText =
         Math.floor(current).toLocaleString("it-IT");
 
-
-
     },25);
-
-
 
 }
 
 
-
-
+// 🚀 AVVIO (MODIFICATO LEGGERMENTE)
 document.addEventListener("DOMContentLoaded", ()=>{
-
 
     const card = document.getElementById("card");
 
-
     if(card){
-
         card.style.opacity = "1";
         card.style.transform = "translateY(0)";
-
     }
 
+    // prima prende YouTube, poi mostra
+    updateYouTubeData().then(() => {
+        showSocial();
+    });
 
-
-    showSocial();
-
-
-
-    setInterval(showSocial,10000);
-
-
+    // loop ogni 10s
+    setInterval(() => {
+        updateYouTubeData();
+        showSocial();
+    },10000);
 
 });
