@@ -1,9 +1,23 @@
-// 🔑 CONFIG (METTI QUI LA TUA CHIAVE E POI TI DO IO IL CHANNEL ID)
+// ===============================
+// YOUTUBE API
+// ===============================
+
 const API_KEY = "AIzaSyBIypEAhqedfbXG-igRAkWQttp3xVblvN0";
 const CHANNEL_ID = "UC0DGVBMy27moUROQ8gWoKMg";
 
 
-// 📊 SOCIALS (NON TOCCATO)
+// ===============================
+// TWITCH BACKEND
+// ===============================
+
+const TWITCH_API =
+"https://j0x-twitch-api.onrender.com/twitch";
+
+
+// ===============================
+// SOCIALS
+// ===============================
+
 const socials = [
 
     {
@@ -37,147 +51,297 @@ const socials = [
 ];
 
 
-// 🔴 NUOVA FUNZIONE YOUTUBE (AGGIUNTA)
-async function updateYouTubeData() {
 
-    try {
+// ===============================
+// YOUTUBE DATI REALI
+// ===============================
 
-        const url = `https://www.googleapis.com/youtube/v3/channels?part=statistics,snippet&id=${CHANNEL_ID}&key=${API_KEY}`;
+async function updateYouTubeData(){
+
+    try{
+
+        const url =
+        `https://www.googleapis.com/youtube/v3/channels?part=statistics,snippet&id=${CHANNEL_ID}&key=${API_KEY}`;
+
 
         const res = await fetch(url);
+
         const data = await res.json();
 
-        if (!data.items || data.items.length === 0) return;
+
+        if(!data.items) return;
+
 
         const channel = data.items[0];
 
-        const subs = parseInt(channel.statistics.subscriberCount);
-        const name = channel.snippet.title;
-        const pfp = channel.snippet.thumbnails.default.url;
 
-        // aggiorna SOLO YouTube
-        socials[0].count = subs;
-        socials[0].username = name;
-        socials[0].icon = pfp;
+        socials[0].count =
+        Number(channel.statistics.subscriberCount);
 
-    } catch (e) {
 
-        console.log("Errore YouTube:", e);
+        socials[0].username =
+        channel.snippet.title;
+
+
+        socials[0].icon =
+        channel.snippet.thumbnails.default.url;
+
+
+    }
+    catch(error){
+
+        console.log("Errore YouTube:", error);
 
     }
 
 }
 
 
-// 🔁 CODICE TUO (NON TOCCATO)
+
+
+// ===============================
+// TWITCH DATI REALI
+// ===============================
+
+async function updateTwitchData(){
+
+    try{
+
+        const res = await fetch(TWITCH_API);
+
+        const data = await res.json();
+
+
+        socials[2].username =
+        data.display_name;
+
+
+        socials[2].icon =
+        data.profile_image_url;
+
+
+    }
+    catch(error){
+
+        console.log("Errore Twitch:", error);
+
+    }
+
+}
+
+
+
+
+// ===============================
+// ROTAZIONE CARD
+// ===============================
+
+
 let index = 0;
 let animation;
 
 
+
 function showSocial(){
 
-    const card = document.getElementById("card");
+    const card =
+    document.getElementById("card");
+
 
     if(!card) return;
 
 
+
     card.style.opacity = "0";
-    card.style.transform = "translateY(20px)";
+
+    card.style.transform =
+    "translateY(20px)";
+
 
 
     setTimeout(()=>{
 
 
-        const social = socials[index];
+        const social =
+        socials[index];
 
 
-        const platform = document.getElementById("platformName");
-        const icon = document.getElementById("socialIcon");
-        const username = document.getElementById("username");
+
+        const platform =
+        document.getElementById("platformName");
+
+
+        const icon =
+        document.getElementById("socialIcon");
+
+
+        const username =
+        document.getElementById("username");
+
 
 
         if(platform)
-            platform.innerText = social.platform;
+            platform.innerText =
+            social.platform;
+
 
 
         if(icon)
-            icon.src = social.icon;
+            icon.src =
+            social.icon;
+
 
 
         if(username)
-            username.innerText = social.username;
+            username.innerText =
+            social.username;
 
 
-        animateNumber(social.count);
+
+        animateNumber(
+            social.count
+        );
+
 
 
         card.style.opacity = "1";
-        card.style.transform = "translateY(0)";
+
+        card.style.transform =
+        "translateY(0)";
+
 
 
         index++;
 
+
         if(index >= socials.length){
+
             index = 0;
+
         }
+
+
 
     },1200);
 
 }
 
 
+
+
+// ===============================
+// ANIMAZIONE NUMERI
+// ===============================
+
+
 function animateNumber(target){
 
-    const count = document.getElementById("count");
+
+    const count =
+    document.getElementById("count");
+
+
 
     if(!count)
         return;
 
+
+
     if(animation)
         clearInterval(animation);
 
+
+
     let current = 0;
 
-    const speed = target / 50;
 
-    animation = setInterval(()=>{
+    const speed =
+    target / 50;
+
+
+
+    animation =
+    setInterval(()=>{
+
 
         current += speed;
+
+
 
         if(current >= target){
 
             current = target;
+
             clearInterval(animation);
 
         }
 
+
+
         count.innerText =
-        Math.floor(current).toLocaleString("it-IT");
+        Math.floor(current)
+        .toLocaleString("it-IT");
+
+
 
     },25);
 
 }
 
 
-// 🚀 AVVIO (MODIFICATO LEGGERMENTE)
-document.addEventListener("DOMContentLoaded", ()=>{
 
-    const card = document.getElementById("card");
+
+
+// ===============================
+// START
+// ===============================
+
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+
+    const card =
+    document.getElementById("card");
+
+
 
     if(card){
+
         card.style.opacity = "1";
-        card.style.transform = "translateY(0)";
+
+        card.style.transform =
+        "translateY(0)";
+
     }
 
-    // prima prende YouTube, poi mostra
-    updateYouTubeData().then(() => {
-        showSocial();
-    });
 
-    // loop ogni 10s
-    setInterval(() => {
+
+    // aggiorna dati prima di partire
+
+    updateYouTubeData();
+
+    updateTwitchData();
+
+
+
+    showSocial();
+
+
+
+    setInterval(()=>{
+
+
         updateYouTubeData();
-        showSocial();
-    },10000);
+
+        updateTwitchData();
+
+
+    },60000);
+
+
+
+    setInterval(showSocial,10000);
+
+
 
 });
