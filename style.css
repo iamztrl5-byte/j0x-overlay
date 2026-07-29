@@ -3,8 +3,8 @@ body {
     margin:0;
     padding:0;
 
-    width:500px;
-    height:180px;
+    width:650px;
+    height:220px;
 
     background:transparent;
 
@@ -16,6 +16,8 @@ body {
 
 
 
+
+
 .overlay {
 
     position:absolute;
@@ -23,8 +25,8 @@ body {
     left:0;
     top:0;
 
-    width:500px;
-    height:180px;
+    width:650px;
+    height:220px;
 
     display:flex;
 
@@ -44,9 +46,9 @@ body {
 
     box-sizing:border-box;
 
-    width:260px;
+    width:340px;
 
-    padding:16px 18px;
+    padding:18px 22px;
 
     border-radius:20px;
 
@@ -93,7 +95,6 @@ body {
     transform:translateY(0);
 
 }
-
 
 
 
@@ -190,7 +191,9 @@ body {
 
     }
 
+
 }
+
 
 
 
@@ -269,6 +272,7 @@ body {
 
 
 
+
 /* ===============================
    CONTENUTO
 =============================== */
@@ -282,9 +286,10 @@ body {
 
     align-items:center;
 
-    gap:12px;
+    gap:18px;
 
 }
+
 
 
 
@@ -321,6 +326,7 @@ body {
 
 
 
+
 /* DATI */
 
 
@@ -331,6 +337,7 @@ body {
     flex-direction:column;
 
 }
+
 
 
 
@@ -402,6 +409,7 @@ body {
 
 
 
+
 .dot {
 
 
@@ -429,6 +437,7 @@ body {
 
 
 
+
 /* NUMERO */
 
 
@@ -443,6 +452,7 @@ body {
 
 
 }
+
 
 
 
@@ -481,7 +491,7 @@ body {
     position:absolute;
 
 
-    right:-45px;
+    right:-70px;
 
 
     top:50%;
@@ -556,6 +566,8 @@ body {
 
 
 
+
+
 .subscribe:hover {
 
 
@@ -567,6 +579,8 @@ body {
 
 
 }
+
+
 
 
 
@@ -609,6 +623,8 @@ body {
 
 
 }
+
+
 
 
 
