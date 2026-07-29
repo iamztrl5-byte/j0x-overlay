@@ -16,6 +16,13 @@ body {
 
 
 
+* {
+
+    box-sizing:border-box;
+
+}
+
+
 
 
 .overlay {
@@ -34,6 +41,8 @@ body {
 
     justify-content:center;
 
+    overflow:visible;
+
 }
 
 
@@ -43,8 +52,6 @@ body {
 .card {
 
     position:relative;
-
-    box-sizing:border-box;
 
     width:340px;
 
@@ -65,8 +72,7 @@ body {
     backdrop-filter:blur(25px);
 
 
-    border:
-    1px solid rgba(255,255,255,0.18);
+    border:1px solid rgba(255,255,255,0.18);
 
 
 
@@ -100,9 +106,8 @@ body {
 
 
 
-/* ===============================
-   SOCIAL HEADER
-=============================== */
+
+/* HEADER SOCIAL */
 
 
 .platform {
@@ -123,7 +128,6 @@ body {
 
 .social-title {
 
-
     font-size:18px;
 
     font-weight:900;
@@ -133,28 +137,21 @@ body {
     text-transform:uppercase;
 
 
-    color:white;
-
-
     display:inline-block;
 
+
+    color:white;
 
 
     text-shadow:
 
-
     0 0 8px rgba(255,255,255,0.8),
-
     0 0 18px rgba(168,85,247,0.8),
-
     0 0 35px rgba(255,79,216,0.5);
 
 
 
-    animation:
-
-    socialGlow 2.5s ease-in-out infinite;
-
+    animation:socialGlow 2.5s infinite ease-in-out;
 
 }
 
@@ -191,9 +188,7 @@ body {
 
     }
 
-
 }
-
 
 
 
@@ -207,16 +202,12 @@ body {
 
     color:#9147ff;
 
-
     text-shadow:
 
     0 0 10px #9147ff,
-
     0 0 30px #9147ff;
 
 }
-
-
 
 
 
@@ -224,16 +215,12 @@ body {
 
     color:#ff0033;
 
-
     text-shadow:
 
     0 0 10px #ff0033,
-
     0 0 30px #ff0033;
 
 }
-
-
 
 
 
@@ -241,16 +228,12 @@ body {
 
     color:#00f2ea;
 
-
     text-shadow:
 
     0 0 10px #00f2ea,
-
     0 0 25px #ff0050;
 
 }
-
-
 
 
 
@@ -258,11 +241,9 @@ body {
 
     color:#ff6bcb;
 
-
     text-shadow:
 
     0 0 10px #ff6bcb,
-
     0 0 30px #ff9d00;
 
 }
@@ -273,9 +254,7 @@ body {
 
 
 
-/* ===============================
-   CONTENUTO
-=============================== */
+/* CONTENUTO */
 
 
 .profile {
@@ -292,11 +271,6 @@ body {
 
 
 
-
-
-
-
-/* FOTO PROFILO */
 
 
 .avatar img {
@@ -316,18 +290,13 @@ body {
 
     box-shadow:
 
-    0 0 15px rgba(255,255,255,0.35);
-
+    0 0 15px rgba(255,255,255,.35);
 
 }
 
 
 
 
-
-
-
-/* DATI */
 
 
 .data {
@@ -343,25 +312,18 @@ body {
 
 
 
-
-/* USERNAME */
-
-
 .name {
 
     display:flex;
 
     align-items:center;
 
-
     gap:10px;
-
 
 
     font-size:18px;
 
     font-weight:700;
-
 
 
     letter-spacing:1px;
@@ -373,10 +335,8 @@ body {
 
     text-shadow:
 
-    0 0 8px rgba(255,255,255,0.6),
-
-    0 0 18px rgba(168,85,247,0.5);
-
+    0 0 8px rgba(255,255,255,.6),
+    0 0 18px rgba(168,85,247,.5);
 
 }
 
@@ -385,7 +345,6 @@ body {
 
 
 .name span {
-
 
     background:
 
@@ -396,11 +355,9 @@ body {
     );
 
 
-
     -webkit-background-clip:text;
 
     -webkit-text-fill-color:transparent;
-
 
 }
 
@@ -408,10 +365,7 @@ body {
 
 
 
-
-
 .dot {
-
 
     width:7px;
 
@@ -424,11 +378,9 @@ body {
     border-radius:50%;
 
 
-
     box-shadow:
 
     0 0 8px #00ff88;
-
 
 }
 
@@ -437,12 +389,7 @@ body {
 
 
 
-
-/* NUMERO */
-
-
 .counter {
-
 
     font-size:26px;
 
@@ -450,20 +397,13 @@ body {
 
     line-height:28px;
 
-
 }
 
 
 
 
 
-
-
-/* LABEL */
-
-
 .label {
-
 
     font-size:10px;
 
@@ -471,7 +411,6 @@ body {
 
     opacity:.55;
 
-
 }
 
 
@@ -480,9 +419,7 @@ body {
 
 
 
-/* ===============================
-   FOLLOW / SUBSCRIBE BUTTON
-=============================== */
+/* SUBSCRIBE */
 
 
 .subscribe {
@@ -500,7 +437,7 @@ body {
     transform:translateY(-50%);
 
 
-    z-index:10;
+    z-index:20;
 
 
 
@@ -551,18 +488,10 @@ body {
 
 
 
-    animation:
-
-    subscribePulse 2s infinite;
-
-
-
-    transition:.4s ease;
+    animation:subscribePulse 2s infinite;
 
 
 }
-
-
 
 
 
@@ -577,10 +506,7 @@ body {
 
     scale(1.12);
 
-
 }
-
-
 
 
 
@@ -591,40 +517,25 @@ body {
 
     0% {
 
-
-        box-shadow:
-
-        0 0 10px #a855f7;
-
+        box-shadow:0 0 10px #a855f7;
 
     }
 
 
     50% {
 
-
-        box-shadow:
-
-        0 0 30px #ff4fd8;
-
+        box-shadow:0 0 30px #ff4fd8;
 
     }
 
 
     100% {
 
-
-        box-shadow:
-
-        0 0 10px #a855f7;
-
+        box-shadow:0 0 10px #a855f7;
 
     }
 
-
 }
-
-
 
 
 
@@ -648,8 +559,6 @@ body {
     0 0 25px #00ff88;
 
 
-
     animation:none;
-
 
 }
