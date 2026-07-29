@@ -15,11 +15,21 @@ const CLIENT_ID = process.env.TWITCH_CLIENT_ID;
 const CLIENT_SECRET = process.env.TWITCH_CLIENT_SECRET;
 
 
+const REDIRECT_URI =
+"https://j0x-twitch-api.onrender.com/auth/twitch/callback";
+
+
+// Token applicazione
 let twitchToken = "";
 
 
+// Token utente (dopo login Twitch)
+let userToken = "";
+
+
+
 // ===============================
-// CREA TOKEN TWITCH
+// CREA TOKEN APP TWITCH
 // ===============================
 
 async function getToken(){
@@ -27,7 +37,7 @@ async function getToken(){
     const response = await fetch(
         "https://id.twitch.tv/oauth2/token",
         {
-            method: "POST",
+            method:"POST",
             headers:{
                 "Content-Type":"application/x-www-form-urlencoded"
             },
@@ -43,9 +53,75 @@ async function getToken(){
     twitchToken = data.access_token;
 
 
-    console.log("Token Twitch ottenuto");
+    console.log("Token app Twitch ottenuto");
 
 }
+
+
+
+
+// ===============================
+// LOGIN TWITCH OAUTH
+// ===============================
+
+app.get("/auth/twitch",(req,res)=>{
+
+
+    const authURL =
+    "https://id.twitch.tv/oauth2/authorize" +
+    "?client_id=" + CLIENT_ID +
+    "&redirect_uri=" + REDIRECT_URI +
+    "&response_type=code" +
+    "&scope=moderator:read:followers";
+
+
+    res.redirect(authURL);
+
+
+});
+
+
+
+
+// ===============================
+// CALLBACK TWITCH
+// ===============================
+
+app.get("/auth/twitch/callback", async(req,res)=>{
+
+
+    const code = req.query.code;
+
+
+    const response = await fetch(
+        "https://id.twitch.tv/oauth2/token",
+        {
+            method:"POST",
+            headers:{
+                "Content-Type":"application/x-www-form-urlencoded"
+            },
+            body:
+            `client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&code=${code}&grant_type=authorization_code&redirect_uri=${REDIRECT_URI}`
+        }
+    );
+
+
+    const data = await response.json();
+
+
+    userToken = data.access_token;
+
+
+    console.log("Token utente Twitch ottenuto");
+
+
+    res.send(
+        "Twitch autorizzato correttamente. Puoi tornare all'overlay."
+    );
+
+
+});
+
 
 
 
@@ -56,14 +132,22 @@ async function getToken(){
 async function getTwitchUser(){
 
 
+    if(!twitchToken){
+
+        await getToken();
+
+    }
+
+
+
     // PROFILO
 
     const userResponse = await fetch(
         "https://api.twitch.tv/helix/users?login=lil_j0x",
         {
             headers:{
-                "Client-ID": CLIENT_ID,
-                "Authorization": `Bearer ${twitchToken}`
+                "Client-ID":CLIENT_ID,
+                "Authorization":`Bearer ${twitchToken}`
             }
         }
     );
@@ -76,34 +160,52 @@ async function getTwitchUser(){
 
 
 
-    // FOLLOWER
+    let followers = 0;
 
-    const followersResponse = await fetch(
-        `https://api.twitch.tv/helix/users/follows?to_id=${user.id}`,
-        {
-            headers:{
-                "Client-ID": CLIENT_ID,
-                "Authorization": `Bearer ${twitchToken}`
+
+
+    // FOLLOWER CON TOKEN UTENTE
+
+    if(userToken){
+
+
+        const followersResponse = await fetch(
+            `https://api.twitch.tv/helix/channels/followers?broadcaster_id=${user.id}`,
+            {
+                headers:{
+                    "Client-ID":CLIENT_ID,
+                    "Authorization":`Bearer ${userToken}`
+                }
             }
-        }
-    );
+        );
 
 
-    const followersData = await followersResponse.json();
+        const followersData =
+        await followersResponse.json();
 
 
 
-    console.log("FOLLOWERS TWITCH:", followersData);
+        console.log(
+            "FOLLOWERS TWITCH:",
+            followersData
+        );
+
+
+        followers =
+        followersData.total || 0;
+
+
+    }
 
 
 
     return {
 
-        display_name: user.display_name,
+        display_name:user.display_name,
 
-        profile_image_url: user.profile_image_url,
+        profile_image_url:user.profile_image_url,
 
-        followers: followersData.total || 0
+        followers:followers
 
     };
 
@@ -113,7 +215,7 @@ async function getTwitchUser(){
 
 
 // ===============================
-// ENDPOINT OVERLAY
+// API OVERLAY
 // ===============================
 
 app.get("/twitch", async(req,res)=>{
@@ -122,27 +224,21 @@ app.get("/twitch", async(req,res)=>{
     try{
 
 
-        if(!twitchToken){
-
-            await getToken();
-
-        }
-
-
-
-        const user = await getTwitchUser();
-
+        const user =
+        await getTwitchUser();
 
 
         res.json(user);
-
 
 
     }
     catch(error){
 
 
-        console.log("ERRORE TWITCH:", error);
+        console.log(
+            "ERRORE TWITCH:",
+            error
+        );
 
 
         res.status(500).json({
@@ -164,7 +260,8 @@ app.get("/twitch", async(req,res)=>{
 // AVVIO SERVER RENDER
 // ===============================
 
-const PORT = process.env.PORT || 3000;
+const PORT =
+process.env.PORT || 3000;
 
 
 app.listen(PORT,()=>{
