@@ -1,7 +1,3 @@
-// ===============================
-// YOUTUBE API
-// ===============================
-
 const API_KEY = "AIzaSyBIypEAhqedfbXG-igRAkWQttp3xVblvN0";
 const CHANNEL_ID = "UC0DGVBMy27moUROQ8gWoKMg";
 
@@ -145,6 +141,64 @@ async function updateTwitchData(){
 
 
 // ===============================
+// FOLLOW EFFECT
+// ===============================
+
+function subscribeAnimation(){
+
+
+    const button =
+    document.getElementById("subscribeBtn");
+
+
+    if(!button)
+        return;
+
+
+
+    button.classList.remove("active");
+
+    button.innerText =
+    "FOLLOW";
+
+
+
+    setTimeout(()=>{
+
+
+        button.classList.add("active");
+
+
+        button.innerText =
+        "✓ ISCRITTO";
+
+
+
+        setTimeout(()=>{
+
+
+            button.classList.remove("active");
+
+
+            button.innerText =
+            "FOLLOW";
+
+
+        },4000);
+
+
+
+    },3000);
+
+
+}
+
+
+
+
+
+
+// ===============================
 // ROTAZIONE CARD
 // ===============================
 
@@ -180,8 +234,6 @@ function showSocial(){
         socials[index];
 
 
-
-        // cambia colore social CSS
 
         card.className =
         "card " + social.platform.toLowerCase();
@@ -236,6 +288,10 @@ function showSocial(){
 
 
 
+        subscribeAnimation();
+
+
+
         card.style.opacity = "1";
 
         card.style.transform =
@@ -258,6 +314,7 @@ function showSocial(){
 
 
 }
+
 
 
 
@@ -332,6 +389,7 @@ function animateNumber(target){
 
 
 
+
 // ===============================
 // START
 // ===============================
@@ -355,7 +413,6 @@ document.addEventListener("DOMContentLoaded",()=>{
 
 
 
-    // primo aggiornamento dati
 
     updateYouTubeData();
 
@@ -363,13 +420,10 @@ document.addEventListener("DOMContentLoaded",()=>{
 
 
 
-    // avvia overlay
-
     showSocial();
 
 
 
-    // aggiorna dati ogni minuto
 
     setInterval(()=>{
 
@@ -384,7 +438,6 @@ document.addEventListener("DOMContentLoaded",()=>{
 
 
 
-    // cambia social ogni 10 secondi
 
     setInterval(showSocial,10000);
 
