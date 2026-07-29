@@ -23,7 +23,7 @@ const REDIRECT_URI =
 let twitchToken = "";
 
 
-// Token utente Twitch salvato su Render
+// Token utente Twitch
 let userToken = process.env.TWITCH_USER_TOKEN || "";
 
 
@@ -62,7 +62,6 @@ async function getToken(){
     console.log("Token app Twitch ottenuto");
 
 }
-
 
 
 
@@ -118,7 +117,21 @@ app.get("/auth/twitch/callback", async(req,res)=>{
         const data = await response.json();
 
 
-        userToken = data.access_token;
+
+        console.log(
+            "RISPOSTA TOKEN TWITCH:",
+            {
+                access_token: data.access_token ? "PRESENTE" : "MANCANTE",
+                refresh_token: data.refresh_token ? "PRESENTE" : "MANCANTE",
+                scope: data.scope,
+                error: data.message || null
+            }
+        );
+
+
+
+        userToken = data.access_token || "";
+
 
 
         console.log(
