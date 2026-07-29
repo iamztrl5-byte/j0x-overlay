@@ -24,7 +24,7 @@ let twitchToken = "";
 
 
 // Token utente (dopo login Twitch)
-let userToken = "";
+let userToken = process.env.TWITCH_USER_TOKEN || "";
 
 
 
