@@ -2,8 +2,14 @@ body {
 
     margin:0;
     padding:0;
+
+    width:500px;
+    height:180px;
+
     background:transparent;
+
     font-family:Arial, Helvetica, sans-serif;
+
     overflow:hidden;
 
 }
@@ -12,18 +18,22 @@ body {
 
 .overlay {
 
+    position:absolute;
+
+    left:0;
+    top:0;
+
     width:500px;
     height:180px;
 
-    position:relative;
-
     display:flex;
+
     align-items:center;
+
     justify-content:center;
 
-    overflow:visible;
-
 }
+
 
 
 
@@ -31,6 +41,8 @@ body {
 .card {
 
     position:relative;
+
+    box-sizing:border-box;
 
     width:260px;
 
@@ -81,6 +93,7 @@ body {
     transform:translateY(0);
 
 }
+
 
 
 
@@ -177,8 +190,8 @@ body {
 
     }
 
-
 }
+
 
 
 
@@ -206,7 +219,6 @@ body {
 
 .youtube .social-title {
 
-
     color:#ff0033;
 
 
@@ -223,7 +235,6 @@ body {
 
 
 .tiktok .social-title {
-
 
     color:#00f2ea;
 
@@ -242,7 +253,6 @@ body {
 
 .instagram .social-title {
 
-
     color:#ff6bcb;
 
 
@@ -258,6 +268,7 @@ body {
 
 
 
+
 /* ===============================
    CONTENUTO
 =============================== */
@@ -265,9 +276,7 @@ body {
 
 .profile {
 
-
     position:relative;
-
 
     display:flex;
 
@@ -275,8 +284,8 @@ body {
 
     gap:12px;
 
-
 }
+
 
 
 
@@ -311,18 +320,18 @@ body {
 
 
 
+
 /* DATI */
 
 
 .data {
 
-
     display:flex;
 
     flex-direction:column;
 
-
 }
+
 
 
 
@@ -332,7 +341,6 @@ body {
 
 
 .name {
-
 
     display:flex;
 
@@ -393,6 +401,7 @@ body {
 
 
 
+
 .dot {
 
 
@@ -419,6 +428,7 @@ body {
 
 
 
+
 /* NUMERO */
 
 
@@ -433,6 +443,7 @@ body {
 
 
 }
+
 
 
 
@@ -457,6 +468,8 @@ body {
 
 
 
+
+
 /* ===============================
    FOLLOW / SUBSCRIBE BUTTON
 =============================== */
@@ -468,7 +481,7 @@ body {
     position:absolute;
 
 
-    right:-65px;
+    right:-45px;
 
 
     top:50%;
