@@ -23,8 +23,14 @@ const REDIRECT_URI =
 let twitchToken = "";
 
 
-// Token utente (dopo login Twitch)
+// Token utente Twitch salvato su Render
 let userToken = process.env.TWITCH_USER_TOKEN || "";
+
+
+console.log(
+    "USER TOKEN CARICATO:",
+    userToken ? "SI" : "NO"
+);
 
 
 
@@ -90,35 +96,63 @@ app.get("/auth/twitch",(req,res)=>{
 app.get("/auth/twitch/callback", async(req,res)=>{
 
 
-    const code = req.query.code;
+    try{
 
 
-    const response = await fetch(
-        "https://id.twitch.tv/oauth2/token",
-        {
-            method:"POST",
-            headers:{
-                "Content-Type":"application/x-www-form-urlencoded"
-            },
-            body:
-            `client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&code=${code}&grant_type=authorization_code&redirect_uri=${REDIRECT_URI}`
-        }
-    );
+        const code = req.query.code;
 
 
-    const data = await response.json();
+        const response = await fetch(
+            "https://id.twitch.tv/oauth2/token",
+            {
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/x-www-form-urlencoded"
+                },
+                body:
+                `client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&code=${code}&grant_type=authorization_code&redirect_uri=${REDIRECT_URI}`
+            }
+        );
 
 
-    userToken = data.access_token;
+        const data = await response.json();
 
 
-    console.log("Token utente Twitch ottenuto");
-    console.log("Token presente:", userToken ? "SI" : "NO");
+        userToken = data.access_token;
 
 
-    res.send(
-        "Twitch autorizzato correttamente. Puoi tornare all'overlay."
-    );
+        console.log(
+            "Token utente Twitch ottenuto"
+        );
+
+
+        console.log(
+            "USER TOKEN RICEVUTO:",
+            userToken ? "SI" : "NO"
+        );
+
+
+        res.send(
+            "Twitch autorizzato correttamente. Puoi tornare all'overlay."
+        );
+
+
+    }
+    catch(error){
+
+
+        console.log(
+            "ERRORE CALLBACK TWITCH:",
+            error
+        );
+
+
+        res.status(500).send(
+            "Errore autorizzazione Twitch"
+        );
+
+
+    }
 
 
 });
@@ -141,8 +175,6 @@ async function getTwitchUser(){
 
 
 
-    // PROFILO
-
     const userResponse = await fetch(
         "https://api.twitch.tv/helix/users?login=lil_j0x",
         {
@@ -160,12 +192,13 @@ async function getTwitchUser(){
     const user = userData.data[0];
 
 
-
     let followers = 0;
 
 
 
-    // FOLLOWER CON TOKEN UTENTE
+    // ===============================
+    // FOLLOWER REALI
+    // ===============================
 
     if(userToken){
 
@@ -197,6 +230,15 @@ async function getTwitchUser(){
 
 
     }
+    else{
+
+
+        console.log(
+            "Nessun token utente Twitch presente"
+        );
+
+
+    }
 
 
 
@@ -212,6 +254,7 @@ async function getTwitchUser(){
 
 
 }
+
 
 
 
