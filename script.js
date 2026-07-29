@@ -33,9 +33,9 @@ const socials = [
     {
         platform: "YOUTUBE",
         username: "JØX TV",
-        count: 26200,
+        count: 0,
         label: "FOLLOWERS",
-        icon: "assets/logo.png",
+        icon: "logo ig.jpeg",
         active: true
     },
 
@@ -45,7 +45,7 @@ const socials = [
         username: "j0x_tv",
         count: 1200,
         label: "FOLLOWERS",
-        icon: "assets/logo.png",
+        icon: "logo ig.jpeg",
         active: false
     },
 
@@ -53,9 +53,9 @@ const socials = [
     {
         platform: "TWITCH",
         username: "il_j0x",
-        count: 350,
+        count: 0,
         label: "FOLLOWERS",
-        icon: "assets/logo.png",
+        icon: "logo ig.jpeg",
         active: true
     },
 
@@ -65,7 +65,7 @@ const socials = [
         username: "JØX Community",
         count: 0,
         label: "MEMBRI ONLINE",
-        icon: "assets/logo.png",
+        icon: "logo ig.jpeg",
         active: true
     },
 
@@ -75,7 +75,7 @@ const socials = [
         username: "lil_j0x",
         count: 45000,
         label: "FOLLOWERS",
-        icon: "assets/logo.png",
+        icon: "logo ig.jpeg",
         active: false
     }
 
@@ -108,10 +108,8 @@ async function updateYouTubeData(){
         `https://www.googleapis.com/youtube/v3/channels?part=statistics,snippet&id=${CHANNEL_ID}&key=${API_KEY}`;
 
 
-
         const res =
         await fetch(url);
-
 
 
         const data =
@@ -129,22 +127,31 @@ async function updateYouTubeData(){
 
 
 
-        socials[0].count =
-        Number(
-            channel.statistics.subscriberCount
+        const youtube =
+        socials.find(
+            s => s.platform === "YOUTUBE"
         );
 
 
 
-        // NOME VISIVO BLOCCATO
-
-        socials[0].username =
-        "JØX TV";
+        if(youtube){
 
 
+            youtube.count =
+            Number(
+                channel.statistics.subscriberCount
+            );
 
-        socials[0].icon =
-        channel.snippet.thumbnails.high.url;
+
+            youtube.username =
+            "JØX TV";
+
+
+            youtube.icon =
+            channel.snippet.thumbnails.high.url;
+
+
+        }
 
 
 
@@ -227,7 +234,6 @@ async function updateTwitchData(){
         }
 
 
-
     }
     catch(error){
 
@@ -241,7 +247,6 @@ async function updateTwitchData(){
     }
 
 }
-
 
 
 
@@ -292,25 +297,18 @@ async function updateDiscordData(){
             "JØX Community";
 
 
-
             discord.count =
             data.presence_count || 0;
-
 
 
             discord.label =
             "MEMBRI ONLINE";
 
 
+            // IMMAGINE MANUALE COMMUNITY
 
-            if(data.icon){
-
-
-                discord.icon =
-                `https://cdn.discordapp.com/icons/${DISCORD_ID}/${data.icon}.png`;
-
-
-            }
+            discord.icon =
+            "logo ig.jpeg";
 
 
         }
@@ -430,10 +428,8 @@ function showSocial(){
     "0";
 
 
-
     card.style.transform =
     "translateY(20px)";
-
 
 
 
@@ -517,9 +513,10 @@ function showSocial(){
         if(label){
 
             label.innerText =
-            social.label || "FOLLOWERS";
+            social.label;
 
         }
+
 
 
 
@@ -536,16 +533,12 @@ function showSocial(){
 
 
 
-
         card.style.opacity =
         "1";
 
 
-
         card.style.transform =
         "translateY(0)";
-
-
 
 
 
@@ -603,14 +596,12 @@ function animateNumber(target){
 
 
 
-
     let current = 0;
 
 
 
     const speed =
     target / 50;
-
 
 
 
@@ -639,7 +630,6 @@ function animateNumber(target){
         count.innerText =
         Math.floor(current)
         .toLocaleString("it-IT");
-
 
 
 
@@ -697,10 +687,7 @@ document.addEventListener(
 
 
 
-
     showSocial();
-
-
 
 
 
@@ -723,13 +710,10 @@ document.addEventListener(
 
 
 
-
-
     setInterval(
         showSocial,
         10000
     );
-
 
 
 });
