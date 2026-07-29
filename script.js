@@ -1,7 +1,3 @@
-// ===============================
-// YOUTUBE API
-// ===============================
-
 const API_KEY = "AIzaSyBIypEAhqedfbXG-igRAkWQttp3xVblvN0";
 const CHANNEL_ID = "UC0DGVBMy27moUROQ8gWoKMg";
 
@@ -96,6 +92,7 @@ async function updateYouTubeData(){
 }
 
 
+
 // ===============================
 // TWITCH DATI REALI
 // ===============================
@@ -139,19 +136,23 @@ async function updateTwitchData(){
 
 
 
+
 // ===============================
 // ROTAZIONE CARD
 // ===============================
 
 let index = 0;
+
 let animation;
 
 
 
 function showSocial(){
 
+
     const card =
     document.getElementById("card");
+
 
 
     if(!card) return;
@@ -165,7 +166,9 @@ function showSocial(){
 
 
 
+
     setTimeout(()=>{
+
 
 
         const social =
@@ -173,32 +176,52 @@ function showSocial(){
 
 
 
+        // CAMBIO COLORE SOCIAL CSS
+
+        card.className =
+        "card " + social.platform.toLowerCase();
+
+
+
+
         const platform =
         document.getElementById("platformName");
 
+
+
         const avatar =
         document.getElementById("avatar");
+
+
 
         const username =
         document.getElementById("username");
 
 
 
+
+
         if(platform)
+
             platform.innerText =
             social.platform;
 
 
 
+
         if(avatar)
+
             avatar.src =
             social.icon;
 
 
 
+
         if(username)
+
             username.innerText =
             social.username;
+
 
 
 
@@ -208,14 +231,18 @@ function showSocial(){
 
 
 
+
         card.style.opacity = "1";
 
         card.style.transform =
-        "translateY(0)";
+        "translateY(0");
+
+
 
 
 
         index++;
+
 
 
         if(index >= socials.length){
@@ -228,7 +255,10 @@ function showSocial(){
 
     },1200);
 
+
+
 }
+
 
 
 
@@ -251,11 +281,14 @@ function animateNumber(target){
 
 
     if(animation)
+
         clearInterval(animation);
 
 
 
+
     let current = 0;
+
 
 
     const speed =
@@ -263,33 +296,46 @@ function animateNumber(target){
 
 
 
+
     animation =
     setInterval(()=>{
+
 
 
         current += speed;
 
 
 
+
         if(current >= target){
+
 
             current = target;
 
+
             clearInterval(animation);
+
 
         }
 
 
 
+
         count.innerText =
+
         Math.floor(current)
+
         .toLocaleString("it-IT");
+
 
 
 
     },25);
 
+
+
 }
+
 
 
 
@@ -301,6 +347,7 @@ function animateNumber(target){
 document.addEventListener("DOMContentLoaded",()=>{
 
 
+
     const card =
     document.getElementById("card");
 
@@ -308,12 +355,16 @@ document.addEventListener("DOMContentLoaded",()=>{
 
     if(card){
 
+
         card.style.opacity = "1";
+
 
         card.style.transform =
         "translateY(0)";
 
+
     }
+
 
 
 
@@ -323,7 +374,10 @@ document.addEventListener("DOMContentLoaded",()=>{
 
 
 
+
     showSocial();
+
+
 
 
 
@@ -332,11 +386,13 @@ document.addEventListener("DOMContentLoaded",()=>{
 
         updateYouTubeData();
 
+
         updateTwitchData();
 
 
 
     },60000);
+
 
 
 
