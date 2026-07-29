@@ -101,6 +101,13 @@ app.get("/auth/twitch/callback", async(req,res)=>{
         const code = req.query.code;
 
 
+        console.log(
+            "CODE RICEVUTO:",
+            code ? "SI" : "NO"
+        );
+
+
+
         const response = await fetch(
             "https://id.twitch.tv/oauth2/token",
             {
@@ -123,7 +130,7 @@ app.get("/auth/twitch/callback", async(req,res)=>{
             {
                 access_token: data.access_token ? "PRESENTE" : "MANCANTE",
                 refresh_token: data.refresh_token ? "PRESENTE" : "MANCANTE",
-                scope: data.scope,
+                scope: data.scope || [],
                 error: data.message || null
             }
         );
