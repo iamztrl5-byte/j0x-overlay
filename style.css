@@ -1,261 +1,63 @@
-const API_KEY = "AIzaSyBIypEAhqedfbXG-igRAkWQttp3xVblvN0";
-const CHANNEL_ID = "UC0DGVBMy27moUROQ8gWoKMg";
+body {
 
-
-// ===============================
-// TWITCH BACKEND
-// ===============================
-
-const TWITCH_API =
-"https://j0x-twitch-api.onrender.com/twitch";
-
-
-// ===============================
-// SOCIALS
-// ===============================
-
-const socials = [
-
-    {
-        platform: "YOUTUBE",
-        username: "JØX TV",
-        count: 26200,
-        icon: "assets/logo.png"
-    },
-
-    {
-        platform: "TIKTOK",
-        username: "j0x_tv",
-        count: 1200,
-        icon: "assets/logo.png"
-    },
-
-    {
-        platform: "TWITCH",
-        username: "il_j0x",
-        count: 350,
-        icon: "assets/logo.png"
-    },
-
-    {
-        platform: "INSTAGRAM",
-        username: "lil_j0x",
-        count: 45000,
-        icon: "assets/logo.png"
-    }
-
-];
-
-
-// ===============================
-// YOUTUBE DATI REALI
-// ===============================
-
-async function updateYouTubeData(){
-
-    try{
-
-        const url =
-        `https://www.googleapis.com/youtube/v3/channels?part=statistics,snippet&id=${CHANNEL_ID}&key=${API_KEY}`;
-
-
-        const res = await fetch(url);
-
-        const data = await res.json();
-
-
-        if(!data.items) return;
-
-
-        const channel = data.items[0];
-
-
-        socials[0].count =
-        Number(channel.statistics.subscriberCount);
-
-
-        socials[0].username =
-        channel.snippet.title;
-
-
-        socials[0].icon =
-        channel.snippet.thumbnails.high.url;
-
-
-    }
-    catch(error){
-
-        console.log("Errore YouTube:", error);
-
-    }
-
-}
-
-
-
-// ===============================
-// TWITCH DATI REALI
-// ===============================
-
-async function updateTwitchData(){
-
-    try{
-
-        const res = await fetch(TWITCH_API);
-
-        const data = await res.json();
-
-
-        console.log("Twitch data:", data);
-
-
-
-        socials[2].username =
-        data.display_name || socials[2].username;
-
-
-        socials[2].icon =
-        data.profile_image_url || socials[2].icon;
-
-
-
-        socials[2].count =
-        (data.followers !== undefined)
-        ? data.followers
-        : socials[2].count;
-
-
-    }
-    catch(error){
-
-        console.log("Errore Twitch:", error);
-
-    }
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow: hidden;
 
 }
 
 
 
 
-// ===============================
-// ROTAZIONE CARD
-// ===============================
+.overlay {
 
-let index = 0;
+    width: 500px;
+    height: 180px;
 
-let animation;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
+}
 
 
-function showSocial(){
 
 
-    const card =
-    document.getElementById("card");
+.card {
 
+    width: 260px;
+    padding: 16px 18px;
 
+    border-radius: 20px;
 
-    if(!card) return;
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,79,216,0.20),
+        rgba(168,85,247,0.12),
+        rgba(255,255,255,0.04)
+    );
 
+    backdrop-filter: blur(25px);
 
+    border:
+    1px solid rgba(255,255,255,0.18);
 
-    card.style.opacity = "0";
+    box-shadow:
+    0 0 30px rgba(255,79,216,0.45),
+    0 0 60px rgba(168,85,247,0.20),
+    inset 0 0 20px rgba(255,255,255,0.08);
 
-    card.style.transform =
-    "translateY(20px)";
+    color: white;
 
+    transition:
+    opacity 1.2s ease,
+    transform 1.2s cubic-bezier(.22,1,.36,1);
 
-
-
-    setTimeout(()=>{
-
-
-
-        const social =
-        socials[index];
-
-
-
-        // CAMBIO COLORE SOCIAL CSS
-
-        card.className =
-        "card " + social.platform.toLowerCase();
-
-
-
-
-        const platform =
-        document.getElementById("platformName");
-
-
-
-        const avatar =
-        document.getElementById("avatar");
-
-
-
-        const username =
-        document.getElementById("username");
-
-
-
-
-
-        if(platform)
-
-            platform.innerText =
-            social.platform;
-
-
-
-
-        if(avatar)
-
-            avatar.src =
-            social.icon;
-
-
-
-
-        if(username)
-
-            username.innerText =
-            social.username;
-
-
-
-
-        animateNumber(
-            social.count
-        );
-
-
-
-
-        card.style.opacity = "1";
-
-        card.style.transform =
-        "translateY(0");
-
-
-
-
-
-        index++;
-
-
-
-        if(index >= socials.length){
-
-            index = 0;
-
-        }
-
-
-
-    },1200);
-
-
+    opacity: 1;
+    transform: translateY(0);
 
 }
 
@@ -263,76 +65,122 @@ function showSocial(){
 
 
 
-// ===============================
-// ANIMAZIONE NUMERI
-// ===============================
-
-function animateNumber(target){
+/* ===============================
+   SOCIAL HEADER
+=============================== */
 
 
-    const count =
-    document.getElementById("count");
+.platform {
 
+    display: flex;
+    align-items: center;
 
+    gap: 8px;
+    margin-bottom: 12px;
 
-    if(!count)
-        return;
-
-
-
-    if(animation)
-
-        clearInterval(animation);
+}
 
 
 
 
-    let current = 0;
+.social-title {
 
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-transform: uppercase;
 
+    color: white;
 
-    const speed =
-    target / 50;
+    display: inline-block;
 
+    text-shadow:
+    0 0 8px rgba(255,255,255,0.8),
+    0 0 18px rgba(168,85,247,0.8),
+    0 0 35px rgba(255,79,216,0.5);
 
+    animation:
+    socialGlow 2.5s ease-in-out infinite;
 
-
-    animation =
-    setInterval(()=>{
-
-
-
-        current += speed;
-
-
-
-
-        if(current >= target){
-
-
-            current = target;
-
-
-            clearInterval(animation);
-
-
-        }
+}
 
 
 
 
-        count.innerText =
+@keyframes socialGlow {
 
-        Math.floor(current)
+    0% {
 
-        .toLocaleString("it-IT");
+        transform: scale(1);
+        opacity: .85;
+
+    }
+
+    50% {
+
+        transform: scale(1.05);
+        opacity: 1;
+
+    }
+
+    100% {
+
+        transform: scale(1);
+        opacity: .85;
+
+    }
+
+}
 
 
 
 
-    },25);
+/* COLORI SOCIAL */
 
 
+.twitch .social-title {
+
+    color: #9147ff;
+
+    text-shadow:
+    0 0 10px #9147ff,
+    0 0 30px #9147ff;
+
+}
+
+
+
+.youtube .social-title {
+
+    color: #ff0033;
+
+    text-shadow:
+    0 0 10px #ff0033,
+    0 0 30px #ff0033;
+
+}
+
+
+
+.tiktok .social-title {
+
+    color: #00f2ea;
+
+    text-shadow:
+    0 0 10px #00f2ea,
+    0 0 25px #ff0050;
+
+}
+
+
+
+.instagram .social-title {
+
+    color: #ff6bcb;
+
+    text-shadow:
+    0 0 10px #ff6bcb,
+    0 0 30px #ff9d00;
 
 }
 
@@ -340,64 +188,138 @@ function animateNumber(target){
 
 
 
-// ===============================
-// START
-// ===============================
-
-document.addEventListener("DOMContentLoaded",()=>{
+/* CONTENUTO */
 
 
+.profile {
 
-    const card =
-    document.getElementById("card");
+    display: flex;
+    align-items: center;
 
+    gap: 12px;
 
-
-    if(card){
-
-
-        card.style.opacity = "1";
-
-
-        card.style.transform =
-        "translateY(0)";
-
-
-    }
+}
 
 
 
 
-    updateYouTubeData();
-
-    updateTwitchData();
+/* FOTO PROFILO */
 
 
+.avatar img {
 
+    width: 70px;
+    height: 70px;
 
-    showSocial();
+    border-radius: 20px;
+    object-fit: cover;
+
+    box-shadow:
+    0 0 15px rgba(255,255,255,0.35);
+
+}
 
 
 
 
 
-    setInterval(()=>{
+/* DATI */
 
 
-        updateYouTubeData();
+.data {
 
+    display: flex;
+    flex-direction: column;
 
-        updateTwitchData();
-
-
-
-    },60000);
-
+}
 
 
 
-    setInterval(showSocial,10000);
+
+
+/* USERNAME */
+
+
+.name {
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    font-size: 18px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    opacity: 1;
+
+    color: white;
+
+    text-shadow:
+    0 0 8px rgba(255,255,255,0.6),
+    0 0 18px rgba(168,85,247,0.5);
+
+}
 
 
 
-});
+/* Gradient username (opzionale ma incluso) */
+
+.name span {
+
+    background: linear-gradient(
+        90deg,
+        #ff4fd8,
+        #a855f7
+    );
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+}
+
+
+
+
+.dot {
+
+    width: 7px;
+    height: 7px;
+
+    background: #00ff88;
+
+    border-radius: 50%;
+
+    box-shadow:
+    0 0 8px #00ff88;
+
+}
+
+
+
+
+/* NUMERO */
+
+
+.counter {
+
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 28px;
+
+}
+
+
+
+
+/* SCRITTA */
+
+
+.label {
+
+    font-size: 10px;
+    letter-spacing: 2px;
+    opacity: .55;
+
+}
