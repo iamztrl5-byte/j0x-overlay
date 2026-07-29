@@ -34,6 +34,7 @@ const socials = [
         platform: "YOUTUBE",
         username: "JØX TV",
         count: 26200,
+        label: "FOLLOWERS",
         icon: "assets/logo.png",
         active: true
     },
@@ -43,6 +44,7 @@ const socials = [
         platform: "TIKTOK",
         username: "j0x_tv",
         count: 1200,
+        label: "FOLLOWERS",
         icon: "assets/logo.png",
         active: false
     },
@@ -52,6 +54,7 @@ const socials = [
         platform: "TWITCH",
         username: "il_j0x",
         count: 350,
+        label: "FOLLOWERS",
         icon: "assets/logo.png",
         active: true
     },
@@ -61,6 +64,7 @@ const socials = [
         platform: "DISCORD",
         username: "JØX Community",
         count: 0,
+        label: "MEMBRI ONLINE",
         icon: "assets/logo.png",
         active: true
     },
@@ -70,6 +74,7 @@ const socials = [
         platform: "INSTAGRAM",
         username: "lil_j0x",
         count: 45000,
+        label: "FOLLOWERS",
         icon: "assets/logo.png",
         active: false
     }
@@ -132,6 +137,7 @@ async function updateYouTubeData(){
 
 
         // NOME VISIVO BLOCCATO
+
         socials[0].username =
         "JØX TV";
 
@@ -155,7 +161,6 @@ async function updateYouTubeData(){
     }
 
 }
-
 
 
 
@@ -292,6 +297,22 @@ async function updateDiscordData(){
             data.presence_count || 0;
 
 
+
+            discord.label =
+            "MEMBRI ONLINE";
+
+
+
+            if(data.icon){
+
+
+                discord.icon =
+                `https://cdn.discordapp.com/icons/${DISCORD_ID}/${data.icon}.png`;
+
+
+            }
+
+
         }
 
 
@@ -337,6 +358,7 @@ function subscribeAnimation(){
 
     button.classList.remove("active");
 
+
     button.innerText =
     "FOLLOW";
 
@@ -380,7 +402,6 @@ function subscribeAnimation(){
 
 
 
-
 // ===============================
 // ROTAZIONE CARD
 // ===============================
@@ -388,7 +409,6 @@ function subscribeAnimation(){
 let index = 0;
 
 let animation;
-
 
 
 
@@ -418,8 +438,8 @@ function showSocial(){
 
 
 
-    setTimeout(()=>{
 
+    setTimeout(()=>{
 
 
         const social =
@@ -441,7 +461,6 @@ function showSocial(){
 
 
 
-
         const platform =
         document.getElementById(
             "platformName"
@@ -457,6 +476,12 @@ function showSocial(){
         const username =
         document.getElementById(
             "username"
+        );
+
+
+        const label =
+        document.getElementById(
+            "label"
         );
 
 
@@ -489,6 +514,15 @@ function showSocial(){
 
 
 
+        if(label){
+
+            label.innerText =
+            social.label || "FOLLOWERS";
+
+        }
+
+
+
 
         animateNumber(
             social.count
@@ -497,6 +531,7 @@ function showSocial(){
 
 
         subscribeAnimation();
+
 
 
 
@@ -514,6 +549,7 @@ function showSocial(){
 
 
 
+
         index++;
 
 
@@ -523,6 +559,7 @@ function showSocial(){
             index = 0;
 
         }
+
 
 
 
@@ -579,7 +616,6 @@ function animateNumber(target){
 
     animation =
     setInterval(()=>{
-
 
 
         current += speed;
@@ -661,7 +697,10 @@ document.addEventListener(
 
 
 
+
     showSocial();
+
+
 
 
 
@@ -679,6 +718,7 @@ document.addEventListener(
 
 
     },60000);
+
 
 
 
