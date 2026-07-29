@@ -20,31 +20,44 @@ const socials = [
         platform: "YOUTUBE",
         username: "JØX TV",
         count: 26200,
-        icon: "assets/logo.png"
+        icon: "assets/logo.png",
+        active: true
     },
 
     {
         platform: "TIKTOK",
         username: "j0x_tv",
         count: 1200,
-        icon: "assets/logo.png"
+        icon: "assets/logo.png",
+        active: false
     },
 
     {
         platform: "TWITCH",
         username: "il_j0x",
         count: 350,
-        icon: "assets/logo.png"
+        icon: "assets/logo.png",
+        active: true
     },
 
     {
         platform: "INSTAGRAM",
         username: "lil_j0x",
         count: 45000,
-        icon: "assets/logo.png"
+        icon: "assets/logo.png",
+        active: false
     }
 
 ];
+
+
+// SOCIAL ATTIVI
+
+const enabledSocials = socials.filter(
+    social => social.active
+);
+
+
 
 
 // ===============================
@@ -74,8 +87,11 @@ async function updateYouTubeData(){
         Number(channel.statistics.subscriberCount);
 
 
-        socials[0].username =
-        channel.snippet.title;
+
+        // NOME VISIVO BLOCCATO MANUALMENTE
+        // socials[0].username =
+        // channel.snippet.title;
+
 
 
         socials[0].icon =
@@ -90,6 +106,8 @@ async function updateYouTubeData(){
     }
 
 }
+
+
 
 
 
@@ -135,6 +153,7 @@ async function updateTwitchData(){
     }
 
 }
+
 
 
 
@@ -198,6 +217,8 @@ function subscribeAnimation(){
 
 
 
+
+
 // ===============================
 // ROTAZIONE CARD
 // ===============================
@@ -227,16 +248,23 @@ function showSocial(){
 
 
 
+
     setTimeout(()=>{
 
 
         const social =
-        socials[index];
+        enabledSocials[index];
+
+
+
+        if(!social)
+            return;
 
 
 
         card.className =
         "card " + social.platform.toLowerCase();
+
 
 
 
@@ -255,12 +283,14 @@ function showSocial(){
 
 
 
+
         if(platform){
 
             platform.innerText =
             social.platform;
 
         }
+
 
 
 
@@ -273,12 +303,15 @@ function showSocial(){
 
 
 
+
         if(username){
 
             username.innerText =
             social.username;
 
         }
+
+
 
 
 
@@ -292,6 +325,8 @@ function showSocial(){
 
 
 
+
+
         card.style.opacity = "1";
 
         card.style.transform =
@@ -299,10 +334,13 @@ function showSocial(){
 
 
 
+
+
         index++;
 
 
-        if(index >= socials.length){
+
+        if(index >= enabledSocials.length){
 
             index = 0;
 
@@ -310,10 +348,14 @@ function showSocial(){
 
 
 
+
     },1200);
 
 
 }
+
+
+
 
 
 
@@ -353,6 +395,7 @@ function animateNumber(target){
 
 
 
+
     animation =
     setInterval(()=>{
 
@@ -373,6 +416,7 @@ function animateNumber(target){
 
 
 
+
         count.innerText =
         Math.floor(current)
         .toLocaleString("it-IT");
@@ -384,6 +428,8 @@ function animateNumber(target){
 
 
 }
+
+
 
 
 
@@ -414,13 +460,20 @@ document.addEventListener("DOMContentLoaded",()=>{
 
 
 
+
+
     updateYouTubeData();
 
     updateTwitchData();
 
 
 
+
+
     showSocial();
+
+
+
 
 
 
@@ -435,6 +488,9 @@ document.addEventListener("DOMContentLoaded",()=>{
 
 
     },60000);
+
+
+
 
 
 
