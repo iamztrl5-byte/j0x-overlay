@@ -7,6 +7,10 @@ const app = express();
 app.use(cors());
 
 
+// ===============================
+// DATI TWITCH DA RENDER ENV
+// ===============================
+
 const CLIENT_ID = process.env.TWITCH_CLIENT_ID;
 const CLIENT_SECRET = process.env.TWITCH_CLIENT_SECRET;
 
@@ -23,7 +27,7 @@ async function getToken(){
     const response = await fetch(
         "https://id.twitch.tv/oauth2/token",
         {
-            method:"POST",
+            method: "POST",
             headers:{
                 "Content-Type":"application/x-www-form-urlencoded"
             },
@@ -35,7 +39,11 @@ async function getToken(){
 
     const data = await response.json();
 
+
     twitchToken = data.access_token;
+
+
+    console.log("Token Twitch ottenuto");
 
 }
 
@@ -48,7 +56,9 @@ async function getToken(){
 async function getTwitchUser(){
 
 
-    const response = await fetch(
+    // PROFILO
+
+    const userResponse = await fetch(
         "https://api.twitch.tv/helix/users?login=lil_j0x",
         {
             headers:{
@@ -59,14 +69,14 @@ async function getTwitchUser(){
     );
 
 
-    const data = await response.json();
+    const userData = await userResponse.json();
 
 
-    const user = data.data[0];
+    const user = userData.data[0];
 
 
 
-    // PRENDE FOLLOWER REALI
+    // FOLLOWER
 
     const followersResponse = await fetch(
         `https://api.twitch.tv/helix/users/follows?to_id=${user.id}`,
@@ -83,13 +93,17 @@ async function getTwitchUser(){
 
 
 
+    console.log("FOLLOWERS TWITCH:", followersData);
+
+
+
     return {
 
         display_name: user.display_name,
 
         profile_image_url: user.profile_image_url,
 
-        followers: followersData.total
+        followers: followersData.total || 0
 
     };
 
@@ -99,7 +113,7 @@ async function getTwitchUser(){
 
 
 // ===============================
-// API PER OVERLAY
+// ENDPOINT OVERLAY
 // ===============================
 
 app.get("/twitch", async(req,res)=>{
@@ -115,17 +129,20 @@ app.get("/twitch", async(req,res)=>{
         }
 
 
+
         const user = await getTwitchUser();
 
 
+
         res.json(user);
+
 
 
     }
     catch(error){
 
 
-        console.log(error);
+        console.log("ERRORE TWITCH:", error);
 
 
         res.status(500).json({
@@ -144,7 +161,7 @@ app.get("/twitch", async(req,res)=>{
 
 
 // ===============================
-// SERVER
+// AVVIO SERVER RENDER
 // ===============================
 
 const PORT = process.env.PORT || 3000;
