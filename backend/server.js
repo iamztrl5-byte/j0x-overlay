@@ -113,6 +113,7 @@ app.get("/auth/twitch/callback", async(req,res)=>{
 
 
     console.log("Token utente Twitch ottenuto");
+    console.log("Token presente:", userToken ? "SI" : "NO");
 
 
     res.send(
