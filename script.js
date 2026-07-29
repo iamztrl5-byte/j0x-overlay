@@ -153,6 +153,9 @@ function showSocial(){
 
         const icon =
         document.getElementById("socialIcon");
+        
+        const avatar =
+        document.getElementById("avatar");
 
         const username =
         document.getElementById("username");
@@ -161,8 +164,8 @@ function showSocial(){
             platform.innerText =
             social.platform;
 
-        if(icon)
-            icon.src =
+        if(avatar)
+            avatar.src =
             social.icon;
 
         if(username)
