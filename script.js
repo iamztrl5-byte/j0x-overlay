@@ -94,7 +94,6 @@ const enabledSocials = socials.filter(
 
 
 
-
 // ===============================
 // YOUTUBE DATI REALI
 // ===============================
@@ -102,7 +101,6 @@ const enabledSocials = socials.filter(
 async function updateYouTubeData(){
 
     try{
-
 
         const url =
         `https://www.googleapis.com/youtube/v3/channels?part=statistics,snippet&id=${CHANNEL_ID}&key=${API_KEY}`;
@@ -136,7 +134,6 @@ async function updateYouTubeData(){
 
         if(youtube){
 
-
             youtube.count =
             Number(
                 channel.statistics.subscriberCount
@@ -150,7 +147,6 @@ async function updateYouTubeData(){
             youtube.icon =
             channel.snippet.thumbnails.high.url;
 
-
         }
 
 
@@ -158,12 +154,10 @@ async function updateYouTubeData(){
     }
     catch(error){
 
-
         console.log(
             "Errore YouTube:",
             error
         );
-
 
     }
 
@@ -183,7 +177,6 @@ async function updateTwitchData(){
 
     try{
 
-
         const res =
         await fetch(TWITCH_API);
 
@@ -191,13 +184,6 @@ async function updateTwitchData(){
 
         const data =
         await res.json();
-
-
-
-        console.log(
-            "Twitch data:",
-            data
-        );
 
 
 
@@ -209,7 +195,6 @@ async function updateTwitchData(){
 
 
         if(twitch){
-
 
             twitch.username =
             data.display_name ||
@@ -230,19 +215,16 @@ async function updateTwitchData(){
             :
             twitch.count;
 
-
         }
 
 
     }
     catch(error){
 
-
         console.log(
             "Errore Twitch:",
             error
         );
-
 
     }
 
@@ -276,13 +258,6 @@ async function updateDiscordData(){
 
 
 
-        console.log(
-            "Discord data:",
-            data
-        );
-
-
-
         const discord =
         socials.find(
             s => s.platform === "DISCORD"
@@ -301,11 +276,11 @@ async function updateDiscordData(){
             data.presence_count || 0;
 
 
+
             discord.label =
             "MEMBRI ONLINE";
 
 
-            // IMMAGINE MANUALE COMMUNITY
 
             discord.icon =
             "logo ig.jpeg";
@@ -314,16 +289,13 @@ async function updateDiscordData(){
         }
 
 
-
     }
     catch(error){
-
 
         console.log(
             "Errore Discord:",
             error
         );
-
 
     }
 
@@ -336,9 +308,8 @@ async function updateDiscordData(){
 
 
 
-
 // ===============================
-// FOLLOW EFFECT
+// ENTRA ORA EFFECT
 // ===============================
 
 function subscribeAnimation(){
@@ -358,7 +329,7 @@ function subscribeAnimation(){
 
 
     button.innerText =
-    "FOLLOW";
+    "ENTRA ORA";
 
 
 
@@ -369,7 +340,7 @@ function subscribeAnimation(){
 
 
         button.innerText =
-        "✓ ISCRITTO";
+        "✓ ENTRATO";
 
 
 
@@ -380,7 +351,7 @@ function subscribeAnimation(){
 
 
             button.innerText =
-            "FOLLOW";
+            "ENTRA ORA";
 
 
         },4000);
@@ -410,7 +381,6 @@ let animation;
 
 
 
-
 function showSocial(){
 
 
@@ -433,8 +403,6 @@ function showSocial(){
 
 
 
-
-
     setTimeout(()=>{
 
 
@@ -448,11 +416,9 @@ function showSocial(){
 
 
 
-
         card.className =
         "card " +
         social.platform.toLowerCase();
-
 
 
 
@@ -482,42 +448,27 @@ function showSocial(){
 
 
 
-
-        if(platform){
-
+        if(platform)
             platform.innerText =
             social.platform;
 
-        }
 
 
-
-        if(avatar){
-
+        if(avatar)
             avatar.src =
             social.icon;
 
-        }
 
 
-
-        if(username){
-
+        if(username)
             username.innerText =
             social.username;
 
-        }
 
 
-
-        if(label){
-
+        if(label)
             label.innerText =
             social.label;
-
-        }
-
-
 
 
 
@@ -532,14 +483,12 @@ function showSocial(){
 
 
 
-
         card.style.opacity =
         "1";
 
 
         card.style.transform =
         "translateY(0)";
-
 
 
 
@@ -552,7 +501,6 @@ function showSocial(){
             index = 0;
 
         }
-
 
 
 
@@ -582,17 +530,13 @@ function animateNumber(target){
     );
 
 
-
     if(!count)
         return;
 
 
 
-    if(animation){
-
+    if(animation)
         clearInterval(animation);
-
-    }
 
 
 
@@ -621,9 +565,7 @@ function animateNumber(target){
 
             clearInterval(animation);
 
-
         }
-
 
 
 
@@ -663,7 +605,6 @@ document.addEventListener(
 
     if(card){
 
-
         card.style.opacity =
         "1";
 
@@ -671,9 +612,7 @@ document.addEventListener(
         card.style.transform =
         "translateY(0)";
 
-
     }
-
 
 
 
@@ -686,9 +625,7 @@ document.addEventListener(
 
 
 
-
     showSocial();
-
 
 
 
