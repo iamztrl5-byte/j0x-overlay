@@ -51,7 +51,6 @@ const socials = [
 ];
 
 
-
 // ===============================
 // YOUTUBE DATI REALI
 // ===============================
@@ -63,29 +62,21 @@ async function updateYouTubeData(){
         const url =
         `https://www.googleapis.com/youtube/v3/channels?part=statistics,snippet&id=${CHANNEL_ID}&key=${API_KEY}`;
 
-
         const res = await fetch(url);
-
         const data = await res.json();
-
 
         if(!data.items) return;
 
-
         const channel = data.items[0];
-
 
         socials[0].count =
         Number(channel.statistics.subscriberCount);
 
-
         socials[0].username =
         channel.snippet.title;
 
-
         socials[0].icon =
         channel.snippet.thumbnails.default.url;
-
 
     }
     catch(error){
@@ -97,10 +88,8 @@ async function updateYouTubeData(){
 }
 
 
-
-
 // ===============================
-// TWITCH DATI REALI
+// TWITCH DATI REALI (FIX COMPLETO)
 // ===============================
 
 async function updateTwitchData(){
@@ -108,17 +97,23 @@ async function updateTwitchData(){
     try{
 
         const res = await fetch(TWITCH_API);
-
         const data = await res.json();
 
+        console.log("Twitch data:", data);
 
+        // username
         socials[2].username =
-        data.display_name;
+        data.display_name || socials[2].username;
 
-
+        // avatar
         socials[2].icon =
-        data.profile_image_url;
+        data.profile_image_url || socials[2].icon;
 
+        // 🔥 FIX IMPORTANTE: followers
+        socials[2].count =
+        (data.followers !== undefined)
+        ? data.followers
+        : socials[2].count;
 
     }
     catch(error){
@@ -130,218 +125,139 @@ async function updateTwitchData(){
 }
 
 
-
-
 // ===============================
 // ROTAZIONE CARD
 // ===============================
 
-
 let index = 0;
 let animation;
-
-
 
 function showSocial(){
 
     const card =
     document.getElementById("card");
 
-
     if(!card) return;
 
-
-
     card.style.opacity = "0";
-
     card.style.transform =
     "translateY(20px)";
 
-
-
     setTimeout(()=>{
-
 
         const social =
         socials[index];
 
-
-
         const platform =
         document.getElementById("platformName");
-
 
         const icon =
         document.getElementById("socialIcon");
 
-
         const username =
         document.getElementById("username");
-
-
 
         if(platform)
             platform.innerText =
             social.platform;
 
-
-
         if(icon)
             icon.src =
             social.icon;
-
-
 
         if(username)
             username.innerText =
             social.username;
 
-
-
         animateNumber(
             social.count
         );
 
-
-
         card.style.opacity = "1";
-
         card.style.transform =
         "translateY(0)";
 
-
-
         index++;
 
-
         if(index >= socials.length){
-
             index = 0;
-
         }
-
-
 
     },1200);
 
 }
 
 
-
-
 // ===============================
 // ANIMAZIONE NUMERI
 // ===============================
 
-
 function animateNumber(target){
-
 
     const count =
     document.getElementById("count");
 
-
-
-    if(!count)
-        return;
-
-
+    if(!count) return;
 
     if(animation)
         clearInterval(animation);
 
-
-
     let current = 0;
-
 
     const speed =
     target / 50;
 
-
-
     animation =
     setInterval(()=>{
 
-
         current += speed;
-
-
 
         if(current >= target){
 
             current = target;
-
             clearInterval(animation);
 
         }
 
-
-
         count.innerText =
         Math.floor(current)
         .toLocaleString("it-IT");
-
-
 
     },25);
 
 }
 
 
-
-
-
 // ===============================
 // START
 // ===============================
 
-
 document.addEventListener("DOMContentLoaded",()=>{
-
 
     const card =
     document.getElementById("card");
 
-
-
     if(card){
 
         card.style.opacity = "1";
-
         card.style.transform =
         "translateY(0)";
 
     }
 
-
-
     // aggiorna dati prima di partire
-
     updateYouTubeData();
-
     updateTwitchData();
-
-
 
     showSocial();
 
-
-
     setInterval(()=>{
 
-
         updateYouTubeData();
-
         updateTwitchData();
-
 
     },60000);
 
-
-
     setInterval(showSocial,10000);
-
-
 
 });
