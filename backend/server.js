@@ -14,6 +14,10 @@ const CLIENT_SECRET = process.env.TWITCH_CLIENT_SECRET;
 let twitchToken = "";
 
 
+// ===============================
+// CREA TOKEN TWITCH
+// ===============================
+
 async function getToken(){
 
     const response = await fetch(
@@ -37,7 +41,12 @@ async function getToken(){
 
 
 
+// ===============================
+// PRENDE DATI TWITCH
+// ===============================
+
 async function getTwitchUser(){
+
 
     const response = await fetch(
         "https://api.twitch.tv/helix/users?login=lil_j0x",
@@ -52,34 +61,99 @@ async function getTwitchUser(){
 
     const data = await response.json();
 
-    return data.data[0];
+
+    const user = data.data[0];
+
+
+
+    // PRENDE FOLLOWER REALI
+
+    const followersResponse = await fetch(
+        `https://api.twitch.tv/helix/users/follows?to_id=${user.id}`,
+        {
+            headers:{
+                "Client-ID": CLIENT_ID,
+                "Authorization": `Bearer ${twitchToken}`
+            }
+        }
+    );
+
+
+    const followersData = await followersResponse.json();
+
+
+
+    return {
+
+        display_name: user.display_name,
+
+        profile_image_url: user.profile_image_url,
+
+        followers: followersData.total
+
+    };
+
 
 }
 
 
 
+// ===============================
+// API PER OVERLAY
+// ===============================
+
 app.get("/twitch", async(req,res)=>{
 
 
-    if(!twitchToken){
+    try{
 
-        await getToken();
+
+        if(!twitchToken){
+
+            await getToken();
+
+        }
+
+
+        const user = await getTwitchUser();
+
+
+        res.json(user);
+
 
     }
+    catch(error){
 
 
-    const user = await getTwitchUser();
+        console.log(error);
 
 
-    res.json(user);
+        res.status(500).json({
+
+            error:"Twitch API error"
+
+        });
+
+
+    }
 
 
 });
 
 
 
-app.listen(3000,()=>{
 
-    console.log("JØX Twitch API online");
+// ===============================
+// SERVER
+// ===============================
+
+const PORT = process.env.PORT || 3000;
+
+
+app.listen(PORT,()=>{
+
+    console.log(
+        "JØX Twitch API online sulla porta " + PORT
+    );
 
 });
